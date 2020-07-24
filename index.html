@@ -10,9 +10,11 @@
 </head>
 <body>
    
-   <div id="login-area" class="mywidth"><h1 class="text-center">Welcome to Eastern Bank Limited</h1>
+   <div id="login-area" class="">
+       <div class="d-flex justify-content-center"><img src="https://media.glassdoor.com/sqll/516902/eastern-bank-limited-squarelogo.png" alt=""></div>
+       <h1 class="text-center">Welcome to Eastern Bank Limited</h1>
     <div class="submit-area">
-        <h4>Log in</h4>
+        <h4 style="color: coral;">Log in</h4>
         <br>
         <input type="text" class="form-control" placeholder="Email">
         <br>
@@ -36,12 +38,12 @@
         <div class="col-md-4">
             <div class ="withdraw status">
                 <h5>Withdraw</h5>
-                <h2>$ 00</h2>
+                <h2>$<span id="currentWithdraw">00</span></h2>
             </div>
         </div>
         <div class="col-md-4">
             <div class="balance status"><h5>Balance</h5>
-                <h2>$ 1240</h2>
+                <h2>$<span id="currentBalance">1240</span></h2>
             </div>
         </div>
     </div>
@@ -63,9 +65,9 @@
         <div class="submit-area mycolor">
             
             <h4>Withdraw</h4>
-        <input type="text" class="form-control" placeholder="$ Amount you want to withdraw">
+        <input id="withdrawAmount" type="text" class="form-control" placeholder="$ Amount you want to withdraw">
         <br>
-        <button class="btn btn-success">Withdraw</button>
+        <button id="addWithdraw" class="btn btn-success">Withdraw</button>
         </div>
     </div>
 </div>
@@ -96,18 +98,44 @@
 
 const depositBtn = document.getElementById('addDeposit');
 depositBtn.addEventListener ("click", function(){
-    const depositAmount = document.getElementById("depositAmount").value;
-    const depositNumber = parseFloat(depositAmount);
+    const depositNumber = getInputNumber("depositAmount");
 
-    let currentDeposit = document.getElementById("currentDeposit").innerText;
-    let currentDepositNumber = parseFloat(currentDeposit);
-    let totalDeposit = depositNumber + currentDepositNumber;
+ 
 
-    document.getElementById("currentDeposit").innerText = totalDeposit;
+
+    updateSpanText("currentDeposit", depositNumber);
+    updateSpanText("currentBalance", depositNumber);
+
     document.getElementById("depositAmount").value = "";
-    
-    
 })
+
+//Withdraw button event handler
+    const withdrawBtn = document.getElementById("addWithdraw");
+    withdrawBtn.addEventListener("click", function(){
+        const withdrawNumber = getInputNumber("withdrawAmount");
+
+        updateSpanText("currentWithdraw", withdrawNumber);
+
+        updateSpanText("currentBalance", -1*withdrawNumber);
+
+        document.getElementById("withdrawAmount").value = "";
+        
+
+    })
+    function getInputNumber(id){
+        const amount  = document.getElementById(id).value;
+       const amountNumber = parseFloat(amount);
+       return amountNumber;
+  
+    }
+
+    function updateSpanText(id, depositNumber){
+        const currentBalance = document.getElementById(id).innerText;
+    const currentBalanceNumber = parseFloat(currentBalance);
+    const totalBalance = depositNumber + currentBalanceNumber;
+    document.getElementById(id).innerText = totalBalance;
+
+    }
 
 
 </script>
